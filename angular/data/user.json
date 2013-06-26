@@ -1,0 +1,487 @@
+use eha
+
+ehaObjectId = ObjectId()
+
+db.service_entity.insert(
+{
+  "_id": ehaObjectId,
+  "name": "e Health Access",
+  "type": "Service Provider",
+  "address": {"streetaddress1": "44 Meenakshi towers", 
+  "streetaddress2": "4th floor, Banjara hills", 
+  "city":"Hyderabad", 
+  "state":"AP", 
+  "zipcode": "5000038", 
+  "country": "India",
+  "locs" : [ [ 55.5 , 42.3 ] ,
+           [ -74 , 44.74 ] ,
+           { "lng" : 55.5 , "lat" : 42.3 } ]
+  },
+  "phone_contact" : "1 800 1030365, 040 6462 6262, 040 4912 1212",
+  "email_contact" : "info@ehealthaccess.com, customercare@ehealthaccess.com",
+  "website" : "www.ehealthaccess.com",
+  "logo" : "img/logo/safksdjf29324r093.jpg",
+  "write_up" : "Innovative Telemedicine ecosystem creator",
+  "onboard_date": new Date("Oct 10, 2011"),
+  "services": ["Virtual Doctor Consultation", "Health Camp", "Health Talk", "Corporate Wellness"]}
+)
+
+
+vineetObjectId = ObjectId()
+
+db.service_entity.insert(
+{
+  "_id": vineetObjectId,
+  "name": "Vineet Poly Clinic",
+  "type": "Service Provider",
+  "address": {"streetaddress1": "1 Azab towers", 
+  "streetaddress2": "1st floor, Towlichowki", 
+  "city":"Hyderabad", 
+  "state":"AP", 
+  "zipcode": "5000038", 
+  "country": "India",
+  "locs" : [ [ 55.5 , 42.3 ] ,
+           [ -74 , 44.74 ] ,
+           { "lng" : 53.5 , "lat" : 41.3 } ]
+  },
+  "phone_contact" : "040 4912 1212",
+  "email_contact" : "DrVineetClicni@gmail.com",
+  "logo" : "img/logo/dfsdf88dsf9324r093.jpg",
+  "write_up" : "Dr. Vineet has been praciticing medicine from 2005, and he takes pride in ensuring quality services...",
+  "onboard_date": new Date("Jan 10, 2013"),
+  "services": ["Doctor Consultation", "Home Visit"]
+}
+)
+
+//Corporate customer entry - Cipher cloud
+cipherCloudObjectId = ObjectId()
+
+db.service_entity.insert(
+{
+  "_id": cipherCloudObjectId,
+  "name": "Cipher Cloud India",
+  "type" : "Client",
+  "address": {"streetaddress1": "Three Cube Towers ", 
+  "streetaddress2": "Suite 2-93/8 & 2-93/9 , White Fields, Kondapur", 
+  "city":"Hyderabad", 
+  "state":"AP", 
+  "zipcode": "500038", 
+  "country": "India",
+  },
+  "onboard_date": new Date("Jan 10, 2012"),
+  "logo" : "img/logo/ciphercloudlogo.jpg",
+  "contact_person" : { "name" : "Mrs. Girija Kumar", "contact_ID" : null }
+}
+)
+
+//Corporate user
+db.users.insert(
+   {
+     "name": { "salute": "Mr.", "first": "Ram", "last": "Kadambi" },
+     "date_of_birth": new Date("Sep 05, 1973"),
+     "sex": "Male",
+     "mobile": "09500041219",
+     "email": "ram.kadambi@gmail.com",
+     "type": "Patient",
+     "date_of_Joining": new Date("Jan 10, 2012"),
+     "languages": ["English", "Hindi", "Tamil"],
+     "affiliated_to" :[ {"name": "e Health Access", "service_entity_ID" : ehaObjectId}],
+     "avatarURL" : "img/avatar/1349409823.jpg",
+     "address": {
+      "streetaddress1": "Apt 32, Blg 1A", 
+      "streetaddress2": "Akash street", 
+      "city":"Chennai", 
+      "state":"TN", 
+      "zipcode": "600119",
+      "country": "India"
+      },
+
+     "patient": {
+      "plan": "Corporate 599",
+      "plan_ID": null,
+      "next_renewal_date": new Date("Jan 09, 2014"),
+      "organization_name": "Cipher Cloud Inc.",
+      "organization_ID": cipherCloudObjectId,
+      },
+
+   }
+)
+
+//Corporate user - HR Point of contact
+db.users.insert(
+   {
+     "name": { "salute": "Mrs.", "first": "Girija", "last": "Kumar" },
+     "date_of_birth": new Date("Apr 05, 1970"),
+     "sex": "Female",
+     "mobile": "09500041219",
+     "email": "HR@ciphercloud.com",
+     "type": "Patient",
+     "date_of_Joining": new Date("Jan 10, 2012"),
+     "languages": ["English", "Hindi", "Telugu"],
+     "affiliated_to" :[ {"name": "e Health Access", "service_entity_ID" : ehaObjectId}],
+     "avatarURL" : "img/avatar/dfdsfs234.jpg",
+     "address": {
+      "streetaddress1": "Apt 15, B Block", 
+      "streetaddress2": "White Fields, Kondapur", 
+      "city":"Hyderabad", 
+      "state":"AP", 
+      "zipcode": "500038",
+      "country": "India"
+      },
+
+     "patient": {
+      "plan": "Corporate 599",
+      "plan_ID": null,
+      "next_renewal_date": new Date("Jan 09, 2014"),
+      "organization_name": "Cipher Cloud Inc.",
+      "organization_ID": cipherCloudObjectId,
+      },
+
+   }
+)
+
+
+//Retail Individual user 
+db.users.insert(
+   {
+     "name": { "salute": "Mr.", "first": "Inthiyaz", "last": "Ahamad" },
+     "date_of_birth": new Date("Apr 05, 1980"),
+     "sex": "Male",
+     "mobile": "09500041219",
+     "email": "Inthiyaz@gmail.com",
+     "type": "Patient",
+     "date_of_Joining": new Date("Feb 10, 2013"),
+     "languages": ["English", "Hindi", "Telugu"],
+     "affiliated_to" :[ {"name": "e Health Access", "service_entity_ID" : ehaObjectId}],
+     "avatarURL" : "img/avatar/dfdsfs234.jpg",
+     "address": {
+      "streetaddress1": "Apt 10, B Block", 
+      "streetaddress2": "10th Cross Road, Banjara Hills", 
+      "city":"Hyderabad", 
+      "state":"AP", 
+      "zipcode": "500058",
+      "country": "India"
+      },
+
+     "patient": {
+      "plan": "Plan 499",
+      "plan_ID": null,
+      "next_renewal_date": new Date("Feb 09, 2014")
+      },
+
+   }
+)
+
+//Retail Family primary user
+db.users.insert(
+   {
+     "name": { "salute": "Mr.", "first": "Phani", "last": "Reddy" },
+     "date_of_birth": new Date("Apr 05, 1985"),
+     "sex": "Male",
+     "mobile": "09500041219",
+     "email": "Phani@gmail.com",
+     "type": "Patient",
+     "date_of_Joining": new Date("Apr 10, 2013"),
+     "languages": ["English", "Telugu"],
+     "affiliated_to" :[ {"name": "e Health Access", "service_entity_ID" : ehaObjectId}],
+     "avatarURL" : "img/avatar/dfdsfs234.jpg",
+     "address": {
+      "streetaddress1": "Apt 10, B Block", 
+      "streetaddress2": "10th Cross Road, Banjara Hills", 
+      "city":"Hyderabad", 
+      "state":"AP", 
+      "zipcode": "500058",
+      "country": "India"
+      },
+
+     "patient": {
+      "plan": "Plan 999",
+      "plan_ID": null,
+      "next_renewal_date": new Date("Apr 09, 2014")
+      },
+
+      "dependents" : [
+      {"name": "Mrs. Phani Reddy", "relationship" :"Spouse", "dependent_ID": null},
+      {"name": "Master Phani Reddy", "relationship" :"Son", "dependent_ID": null}
+      ]
+
+   }
+)
+
+//Retail Family dependent user
+db.users.insert(
+   {
+     "name": { "salute": "Mrs.", "first": "Phani", "last": "Reddy" },
+     "date_of_birth": new Date("Apr 05, 1989"),
+     "sex": "Female",
+     "mobile": "09500041219",
+     "email": "Mrs.Phani@gmail.com",
+     "type": "Patient",
+     "date_of_Joining": new Date("Apr 10, 2013"),
+     "languages": ["English", "Telugu"],
+     "affiliated_to" :[ {"name": "e Health Access", "service_entity_ID" : ehaObjectId}],
+     "avatarURL" : "img/avatar/dfdsfs234.jpg",
+     "address": {
+      "streetaddress1": "Apt 10, B Block", 
+      "streetaddress2": "10th Cross Road, Banjara Hills", 
+      "city":"Hyderabad", 
+      "state":"AP", 
+      "zipcode": "500058",
+      "country": "India"
+      },
+
+     "patient": {
+      "plan": "Dependent Plan",
+      "plan_ID": null,
+      "next_renewal_date": new Date("Apr 09, 2014")
+      },
+
+      "primary" : 
+      {"name": "Mr. Phani Reddy", "primary_ID": null}
+
+   }
+)
+
+
+
+//Doctor - Service provider
+db.users.insert(
+   {
+     "name": { "salute": "Dr.", "first": "Sandeep", "last": "Raju" },
+     "date_of_birth": new Date("Jan 01, 1980"),
+     "sex": "Male",
+     "mobile": "09500041219",
+     "email": "Dr.Sandeep@ehealthaccess.com",
+     "type": "Doctor",
+     "date_of_Joining": new Date("Sep 10, 2011"),
+     "languages": ["English", "Hindi", "Telugu", "Tamil"],
+     "affiliated_to" :[ 
+     {"name": "e Health Access", "service_entity_ID" : ehaObjectId}, 
+     {"name": "Vineet Poly Clinic", "service_entity_ID" : vineetObjectId }
+     ],
+     "avatarURL" : "img/avatar/2848jhf928.jpg",
+     "address": {
+      "streetaddress1": "44 Meenakshi towers", 
+      "streetaddress2": "4th floor, Banjara hills", 
+      "city":"Hyderabad", 
+      "state":"AP", 
+      "zipcode": "500038", 
+      "country": "India"
+     },
+
+     "doctor": {
+       "plan": "Internal GP Plan",
+        "plan_ID": null,
+        "mci_number" : "1238MJJ99",
+        "speciality" : ["Family Practice", "General Physician"],
+        "credentials": [
+            {"name": "MBBS", "institution": "Karnataka University", "year": "2001"},
+            {"name": "Paper on Rural m Health", "institution": "Telemedicine societ meet - Kovai", "year":"2012"}
+          ],
+    "about_me": "Doctor version about self",
+    "references" : [
+{"name": "Apollo hospital Madhapur", "description": "performed eye camp for the hospital patients", "date_from" : new Date("Mar 05,2010"), "date_to": new Date("Mar 10, 2010")}
+],
+ "testimonial" : [
+{"patient_name" : "Inthiyaz A" , "patient_city" : "Hyderabad", "date_created" : new Date("June 01, 2013"), "comment": "Thanks for the quick response, it was very helpful for me..", patient_ID: null}
+],
+"visiting_time" : [
+        {"consultation_day":"Monday", "consultation_time": ["0900","0915","0930","0945","1000","1500","1515","1530","1545"]},
+        {"consultation_day":"Tuesday", "consultation_time": ["0900","0915","0930","0945","1000","1500","1515","1530","1545"]},
+        {"consultation_day":"Wednesday", "consultation_time": ["0900","0915","0930","0945","1000","1500","1515","1530","1545"]},
+        {"consultation_day":"Thursday", "consultation_time": ["0900","0915","0930","0945","1000","1500","1515","1530","1545"]},
+        {"consultation_day":"Friday", "consultation_time": ["0900","0915","0930","0945","1000","1500","1515","1530","1545"]},
+        {"consultation_day":"Saturday", "consultation_time": ["1100","1115","1130","1145","1200","1200","1215","1230","1245"]}
+        ]
+      }
+   
+
+   }
+)
+
+use eha
+//delete documents if any for consultations
+db.consultations.remove()
+
+//Consultation for the first time from customer with no previous record and no new vital
+//consultation created by the customer
+
+db.consultations.insert(
+{
+  "patient_name": "Mr. Inthiyaz A",
+  "patient_ID": null,
+  "doctor_name": "Dr. Vineet K",
+  "doctor_ID": null,
+  "consultation_date": new Date("Jun 21, 2013"),
+  "consultation_slot" : "1500",
+  "consultation_mode" : "VIDEO",
+  "consultation_reason" : "Have constant Head ache",
+  "created_by": null,
+  "status": "Open"
+  })
+
+
+//consultation with Vitals calculated for the first time
+//consultation created by customer
+db.consultations.insert(
+{
+  "patient_name": "Ms. Vinitha",
+  "patient_ID": null,
+  "doctor_name": "Dr. Vineet K",
+  "doctor_ID": null,
+  "consultation_date": new Date("Jun 21, 2013"),
+  "consultation_slot" : "1500",
+  "consultation_mode" : "VIDEO",
+  "consultation_reason" : "Have constant Head ache",
+  "created_by": null,
+  "status" : "Open",
+  "vitals":
+  {
+    "temperature": "98.5",
+    "SBP": "130",
+    "DBP": "90",
+    "Weight": "85",
+    "date_of_capture": new Date("Jun 14, 2013")
+  }
+  })
+
+objectConsultationID = db.consultations.find({"patient_name": "Mr. Inthiyaz A"}, {"_ID": 1})
+//doctor updating consultation with accept confirmation
+db.consultations.update
+({
+  "_id" : ObjectId("51bc3939b4e4c76eefbbf630")
+},
+{
+  $set: {"status":"Accept"}
+}
+  )
+
+//use it using the name for time being
+db.consultations.update({"patient_name": "Mr. Inthiyaz A"}, {$set: {"status":"Accept"}})
+
+
+//doctor updating consultation with diagnosis
+db.consultations.update({"patient_name": "Mr. Inthiyaz A"}, {$set: {"status":"Complete", "diagnosis": "Take rest, drink lot of water and stay away from sun for two days"}})
+
+//doctor updating consultation with medications - separate subdocument[s]
+db.consultations.update({"patient_name": "Mr. Inthiyaz A"}, {$set: {"status":"Complete", "medications.name": "Dolo 650", "medications.dosage": "1-0-1", "medications.frequency": "2 days"}})
+
+
+db.iploc.insert(
+{
+"LocationID" : 58269,
+"Country" : "US",
+"Region" : "GA",
+"City" : "Atlanta",
+"PostalCode" : 92619,
+"Latitude" : 33.6453,
+"Longitude" : -117.8423,
+"Blocks" : [
+  { "Start" : 2061605888, "End" : 3061606143 },
+  { "Start" : 1061840384, "End" : 3061840639 },
+  { "Start" : 3064361104, "End" : 3064361119 },
+  { "Start" : 3083381760, "End" : 3083382015 },
+  { "Start" : 3117868656, "End" : 3117868671 },
+  { "Start" : 3119495168, "End" : 3119495295 }
+]}
+)
+
+db.iploc.find(
+{ "Blocks.Start": 2061840384 }, {Blocks:0}
+)
+
+
+db.iploc.find({ "Blocks" : {"$elemMatch" : {
+  "Start": 1061840384, 
+  "End" : { "$gte" : 202785025 }}}},
+{Blocks : 0}
+);
+
+db.users.find({"doctor.visiting_time.consultation_day":"Monday"}, {"doctor",0}).prte
+
+db.users.find({"doctor.visiting_time.consultation_day":"Monday"}, {"doctor":0,
+"affiliated_to":0,"address":0}).pretty()
+
+db.users.find({"doctor.visiting_time" : {"$elemMatch" : {
+consultation_day":"Monday",
+"consultation_time" : { "$in" : ['1500','1515']}
+}}}, {"doctor":0,
+"affiliated_to":0,"address":0}).pretty()
+
+
+"
+use eha
+//delete documents if any for health record
+db.health_records.remove()
+
+db.health_records.insert(
+{
+  "patinent_name": "Mr. Inthiyaz A",
+  "patient_ID" : null ,
+  "consultations": 
+  [
+  {
+  "doctor_name": "Dr. Vineet K",
+  "doctor_ID": null,
+  "consultation_date": new Date("Jun 21, 2013"),
+  "consultation_slot" : "1500",
+  "consultation_mode" : "VIDEO",
+  "consultation_reason" : "Have constant Head ache",
+  "created_by": null,
+  "status" : "Complete",
+  "diagnosis": "Take complete rest for couple of days" 
+  },
+  {
+  "doctor_name": "Dr. Saneep",
+  "doctor_ID": null,
+  "consultation_date": new Date("May 28, 2013"),
+  "consultation_slot" : "1500",
+  "consultation_mode" : "PHONE",
+  "consultation_reason" : "Have constant Neck pain and naseau",
+  "created_by": null,
+  "status" : "Complete",
+  "diagnosis": "Based on our discussion , It looks like you had too much oiley food, Please avoid this going forward. The constant phone call taking with out headset is a major factor to your pain. Please take the prescribed medication for 2 days. Medication - Dolo 650 - 1- 0 - 1, 3 days" 
+  }
+
+  ],
+
+"vitals" : [
+  {
+    "temperature": "98.5",
+    "SBP": "130",
+    "DBP": "90",
+    "Weight": "85",
+    "date_of_capture": new Date("Jun 14, 2013")
+    },
+    {
+    "temperature": "98.5",
+    "SBP": "130",
+    "DBP": "90",
+    "Weight": "85",
+    "date_of_capture": new Date("May 28, 2013")
+    }
+    ],
+
+    "medications": [
+    {"name": "Dolo 650 mg",
+    "dosage": "1-0-1",
+    "duration": "3 days",
+    "date_prescribed": new Date("May 28, 2013")
+      }
+    ],
+
+      "reports": [
+      {
+        "name":"CBT",
+        "date_of_capture": new Date("Jan 10, 2013"),
+        "file_src" : "/data/usr/reports/dsfklsdjfsdalj24r2.pdf"
+        },
+        {
+        "name":"Neck MRI Scan Report",
+        "date_of_capture": new Date("May  30, 2013"),
+        "comment" : "Came from Arthi Scans for checking the neck pain and naseau",
+        "file_src" : "/data/usr/reports/dsfklsdjfsdalj24r2.pdf"
+        }]
+
+}
+)

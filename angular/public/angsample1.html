@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Have fun with Angular</title>
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/app.css">
+	</head>
+	<body ng-app>
+		name: <input type="text" ng-model="name"></input>
+		<p>Hello {{name}}!</p>
+
+		<div ng-controller="myCtrl">
+			<button ng-click="toggle()">Toggle</button>
+			<p ng-show="visible">Hello World</p>
+		</div>
+
+		<div ng-controller="myOtherCtrl">
+			<p> {{otherValue}}</p>
+			<p ng-init="incBy(5)"> {{value2}}
+		</div>
+
+		Enter you name :<input type="text" ng-model="uppername" ></input>
+		<p> Hello {{uppername| uppercase}} </p>
+
+		<div ng-controller="myCtrl2">
+			<input type="text" ng-model="name" place-holder="Enter your name"></input>
+			<p>{{greeting}}</p>
+		</div>
+
+<script type="text/javascript">
+window.onload = function(){
+	console.log("Hello");
+}
+</script>
+<script src="/lib/jquery.js"></script>
+		<script src="/lib/underscore-min.js"></script>
+		<script src="/lib/bootstrap.min.js"></script>
+		<script src="/lib/angular/angular.js"></script>
+		<script src="/js/app.js"></script>
+		<script type="text/javascript" src="/js/controllers/EventController.js"></script>
+	</body>
+	</html>

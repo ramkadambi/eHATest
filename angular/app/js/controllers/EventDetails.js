@@ -1,0 +1,2 @@
+/* EventDetails Controller
+ Purpose of this controller is to create scope to the event details. The eventDetails scope will be contain in the model, which will have a 2 way binding to render UI to the view */

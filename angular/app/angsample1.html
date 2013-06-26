@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang='en' ng-app>
+  <head>
+    <title>SERVICE PROVIDER</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
+	<meta charset="utf-8">
+	<title>Have fun with Angular</title>
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/app.css">
+	</head>
+	<body ng-controller="ServiceController">
+	<div ng-repeat="ent in entity">
+    
+        <img ng-src={{ent.logo}}>
+
+        <div>
+        	<p>about Us: {{ent.write_up}}</p> 
+        	
+
+
+        	<p>Services Provided :
+        		<ul >
+        		
+        			<li>{{ent.services[0]}}</li>
+        			<li>{{ent.services[1]}}</li>
+        			<li>{{ent.services[2]}}</li>
+        		
+        	</ul>	
+        </p>
+        	
+        </div>
+        </div>
+    <div>    
+    <table>
+   
+    
+      <tr ng-repeat="doc in doctors">
+        
+        <td>{{doc.name.first}}</td>
+        <td>{{doc.doctor.visiting_time[0].consultation_time}}</td>
+        <td>{{doc.Blocked[0].appointment_time}}</td>
+      </tr>
+    </table>
+</div>
+    <script>
+      function ServiceController($scope, $http) {
+        $http.get('/service_entity/51ca5a7336ed4fa598e50109').success(function(data, status, headers, config) {
+          $scope.entity = data;
+          $scope.services=data.services;
+        });
+        $http.get('/doctors/showDocByAffliation/AarthiScans').success(function(data, status, headers, config) {
+          $scope.doctors = data;
+        });
+         
+      }
+    </script>
+		
+
+<!--script type="text/javascript">
+window.onload = function()
+	//var id = window.document.URL.toString();
+	console.log("Hello" + id);
+}
+</script-->
+<script src="/lib/jquery.js"></script>
+		<script src="/lib/underscore-min.js"></script>
+		<script src="/lib/bootstrap.min.js"></script>
+		<script src="/lib/angular/angular.js"></script>
+		<script src="/js/app.js"></script>
+		<script type="text/javascript" src="/js/controllers/EventController.js"></script>
+	</body>
+	</html>

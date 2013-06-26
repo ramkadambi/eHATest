@@ -1,0 +1,205 @@
+use eha
+//delete documents if any for consultations
+db.consultations.remove()
+
+//Consultation for the first time from customer with no previous record and no new vital
+//consultation created by the customer
+
+db.consultations.insert(
+{
+  "patient_name": "Mr. Inthiyaz A",
+  "patient_ID": null,
+  "doctor_name": "Dr. Vineet K",
+  "doctor_ID": null,
+  "consultation_date": new Date("Jun 21, 2013"),
+  "consultation_slot" : "1500",
+  "consultation_mode" : "VIDEO",
+  "consultation_reason" : "Have constant Head ache",
+  "created_by": null,
+  "status": "Open"
+  })
+
+//consultation with Vitals calculated for the first time
+//consultation created by customer
+db.consultations.insert(
+{
+  "patient_name": "Ms. Vinitha",
+  "patient_ID": null,
+  "doctor_name": "Dr. Vineet K",
+  "doctor_ID": null,
+  "consultation_date": new Date("Jun 21, 2013"),
+  "consultation_slot" : "1500",
+  "consultation_mode" : "VIDEO",
+  "consultation_reason" : "Have constant Head ache",
+  "created_by": null,
+  "status" : "Open",
+  "vitals":
+  {
+    "temperature": "98.5",
+    "SBP": "130",
+    "DBP": "90",
+    "Weight": "85",
+    "date_of_capture": new Date("Jun 14, 2013")
+  }
+  })
+
+objectConsultationID = db.consultations.find({"patient_name": "Mr. Inthiyaz A"}, {"_ID": 1})
+
+//doctor updating consultation with accept confirmation
+db.consultations.update(
+{  "_id" : ObjectId("51bec4f8494bb42a8c6ad809")},
+{  $set: {"status":"Accept"}})
+
+
+
+//doctor updating consultation with diagnosis - sub-document should be inserted to the health-record for patient - Inthiyaz
+db.consultations.update({"patient_name": "Mr. Inthiyaz A"}, {$set: {"status":"Complete", "diagnosis": "Take rest, drink lot of water and stay away from sun for two days"}})
+
+
+//doctor updating consultation with medications - separate subdocument[s]
+db.consultations.update({"patient_name": "Mr. Inthiyaz A"}, {$set: {"status":"Complete", "medications.name": "Dolo 650", "medications.dosage": "1-0-1", "medications.frequency": "2 days"}})
+
+// new consultation happens .. the user selects the date and time
+db.consultations.insert(
+{
+  "patient_name": "Mr. Ram kadambi",
+  "patient_ID": null,
+  "doctor_name": "Dr. Vaishnav Davey",
+  "doctor_ID": null,
+  "consultation_date": new Date("Jun 16, 2013"),
+  "consultation_slot" : "1200",
+  "consultation_mode" : "PHONE",
+  "consultation_reason" : "Have swollen jaw",
+  "created_by": null,
+  "status": "Open"
+  })
+
+// the patients's document gets updated with the new appointment based on the id
+db.users.update( {"_id" : ObjectId("51bc290dc2ae8f9f0b3a4810")},
+       { $push: { Blocked : {Appointment_date : new Date("Jun 16, 2013"), Appointment_time : "1200" }} })
+
+/*on having multiple appointments on different days the Patient's(user) document looks like
+  
+ "Blocked" : [
+         {
+                 "Appointment_date" : ISODate("2013-06-15T18:30:00Z"),
+                 "Appointment_time" : "1200"
+         },
+         {
+                 "Appointment_date" : ISODate("2013-06-16T18:30:00Z"),
+                 "Appointment_time" : "1300"
+         }
+ ],*/
+ // the Doctor's document gets updated with the new appointment based on the id
+ 
+db.users.update( {"_id" : ObjectId("51bc325ac2ae8f9f0b3a4819")},
+       { $push: { Blocked : {Appointment_date : new Date("Jun 16, 2013"), Appointment_time : "1200" }} })
+
+//cron job to remove the finished appointments for the day based on date
+
+//part 1 : in consultation collection
+//part 1.a) assuming that even if an appointment gets postponed (status changed).. a new date will be attached to it
+db.consultations.remove({"consultation_date": new Date("Jun 16, 2013")});
+//part 1.b) assuming that even if an appointment gets postponed (status changed)..but the user or the doctor has teh liberty to not mention the new postponed date
+ db.consultations.remove({"consultation_date": new Date("Jun 16, 2013"), status:"Complete"});
+
+// part 2 : in users collection
+ db.users.update( {"Blocked.Appointment_date":   ISODate("2013-06-16T18:30:00Z")}, { $pop: {"Blocked":1 } } ); // a small glitch.. on using Appointment_date : new Date("Jun 16, 2013") in the query part.. the update doesnt seem to work
+
+// Query to get Doctor visting time for a given date and time (from user table)
+ db.users.find( { type="Doctor",visiting_time: { $elemMatch: { consultation_day: "Monday" } } } );
+
+
+//Query to check consultation for a given patient for today + future appointments
+//there r 2 ways to do it one from consultation table using Patient[doctor] name or from user table.But on doing it from the user table since we dont obtain any other details abt the consultation other than the date and time , it wont be of much help when displaying in the UI  
+//ASSUMPTION: We fix the future time slot to be a month.. it can be varied though
+
+var present_date= new Date("Jun 16, 2013");
+var future_date = new Date("Jun 16, 2014");
+db.consultations.find({patient_name:"Mr. Ram kadambi",consultation_date: {$gte: present_date, $lt: future_date}}).pretty();//can use patient_id also
+
+//Query to check consultation for a given Doctor for today + future appointments
+db.consultations.find({doctor_name:"Dr. Nivedhita Davey",consultation_date: {$gte: presen
+t_date, $lt: future_date}}).pretty();
+
+//for performance .. we cud create an index for Patient_name ..(but its optional)
+db.posts.ensureIndex({patient_name:1})
+
+// query to update consultation, consultation status : when doctor cancels appointment 
+//ASSUMPTION: this involves 2 updates , one at the consultation table and another at the user table
+
+//in consultations table
+db.consultations.update({"doctor_name" : "Dr. Nivedhita Davey" , "patient_name": "Mr. Ram kadambi","consultation_date": new Date("jun 22, 2013"),"consultation_slot" : "1200"}, {$set: {"status":"Cancel"}})
+//in users table
+db.users.update( {"name.first" : "Nivedhita","Blocked.Appointment_date":   new Date("Jun 22, 2013"),"Blocked.Appointment_time" : "1200"}, { $pop: {"Blocked":1 } } );
+db.users.update( {"name.first" : "Ram","Blocked.Appointment_date":   new Date("Jun 22, 2013"),"Blocked.Appointment_time" : "1200"}, { $pop: {"Blocked":1 } } );
+
+
+//query to update consultation,diagnosis,consultation_status=complete(change from "accept" to "complete")
+//using _id
+db.consultations.update({ "_id" : ObjectId("51bd809a4dfa786bd5245467")}, {$set: {"status":"Complete", "diagnosis": "Take rest, dont talk"}})
+//(or) using attributes
+db.consultations.update({"doctor_name" : "Dr. Nivedhita Davey" , "patient_name": "Mr. Ram kadambi","consultation_date": new Date("jun 22, 2013"),"consultation_slot" : "1200"}, {$set: {"status":"Complete", "diagnosis": "Take rest, dont talk"}})
+
+//query to update consultation,diagnosis,Medications,consultation_status=complete(change from "accept" to "complete")
+//using _id and only one medication but AVOID  using this statement because later on wanting to add an array of medicines for the same consultation teh structure is little deformed making it difficult of futher read
+//eg below wingas obtained on using two pushes , this problem was solved using pushAll..so even on having one medication..its better to use pushALl so that later updation is easy
+/*[
+        {
+                "name" : "Pan40",
+                "dosage" : "1-0-1",
+                "frequency" : "3 days"
+        },
+        {
+                "name" : "clamp",
+                "dosage" : "1-0-1",
+                "frequency" : "3 days"
+        }
+],
+[
+        {
+                "name" : "crocin",
+                "dosage" : "1-0-1",
+                "frequency" : "3 days"
+        },
+        {
+                "name" : "sinorest",
+                "dosage" : "1-0-1",
+                "frequency" : "3 days"
+        }
+],*/
+db.consultations.update( {"_id" : ObjectId("51bdf9ba318b6253e01ed02f")},
+      {$set: {"status":"Complete", "diagnosis": "Take rest, dont talk"} ,$push: { medications : {name: "Pan40", dosage: "1-0-1",frequency: "3 days"}} })
+//using _id and multiple medications
+ db.consultations.update( {"_id" : ObjectId("51bdf9ba318b6253e01ed02f")},  {$set: {"status":"Accept", "diagnosis": "Take rest, dont talk"} ,$pushAll: { medications : [{name: "diprovate", dosage: "1-0-1",frequency: "3 days"},{name: "hicet", dosage: "1-0-1",frequency:"3 days"}]}})
+
+//query to update consultation,diagnosis,Medications,LabTests,consultation_status=complete(change from "accept" to "complete")
+
+db.consultations.update( {"_id" : ObjectId("51bdf9ba318b6253e01ed02f")},
+     
+        {
+          $set: {"status":"Complete", "diagnosis": "Take rest, dont walk"} , 
+           $pushAll: 
+            {medications : [{name: "cfj", dosage: "1-0-1",frequency: "3 days"},{name: "kfj", dosage: "1-0-1",frequency: "3 days"}],
+            LabTests : [{name: "blood sugar" ,"reading1" : "124","reading2" : "24","comment" : "sugar normal"},{"name" : "Urine","reading1" : "34", "comment" : "urine colouration normal"}]}
+          
+        }
+      
+        )
+//Query to add last vitals and last consultation to the user collection for patient subdocument (Insert)
+
+db.users.update(
+   { "_id" : ObjectId("51bc291cc2ae8f9f0b3a4811") },
+   {
+     $set: {
+             Vitals:    {"temperature": "98.5","SBP": "130","DBP": "90","Weight": "85","date_of_capture": new Date("Jun 14, 2013") },
+              Last_Consultation:{"date": new Date("Jun 16,2013"),"Time": "1300","Doctor_Attended": "Dr. Nivedhita Davey"  ,"consultation_reason" : "Have swollen jaw" }
+            }           
+                     
+    } ,
+   { upsert: true }
+)
+
+
+
+db.users.find({"type":"Doctor"},{"affiliated_to" : {$elemMatch : {"name" : "Vineet Poly Clinic"}}}).pretty()
